@@ -1,38 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ChakraProvider,
   Box,
+  Button,
   Text,
-  Link,
-  VStack,
-  Code,
+  Flex,
   Grid,
+  Spinner,
   theme,
 } from '@chakra-ui/react';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
-import { Logo } from './Logo';
+
+const BASE_URL = 'https://www.boredapi.com/api';
 
 function App() {
+  const [loading, setLoading] = useState(false);
+  const [activityData, setActivityData] = useState();
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await fetch(`${BASE_URL}/activity`);
+    const data = await response.json();
+    setActivityData(data);
+    setLoading(false);
+  };
+
+  const Activity = ({ ...rest }) => {
+    if (loading) {
+      return (
+        <Box mt={4}>
+          <Spinner />
+        </Box>
+      );
+    } else {
+      return (
+        <Box direction="column" {...rest}>
+          <Text> {activityData?.activity}</Text>
+        </Box>
+      );
+    }
+  };
+
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
-        <Grid minH="100vh" p={3}>
-          <ColorModeSwitcher justifySelf="flex-end" />
-          <VStack spacing={8}>
-            <Logo h="40vmin" pointerEvents="none" />
-            <Text>
-              Edit <Code fontSize="xl">src/App.js</Code> and save to reload.
-            </Text>
-            <Link
-              color="teal.500"
-              href="https://chakra-ui.com"
-              fontSize="2xl"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn Chakra
-            </Link>
-          </VStack>
+      <Box>
+        <ColorModeSwitcher />
+        <Grid minH="50vh" p={3}>
+          <Flex direction="column" align="center" justify="center">
+            <Button onClick={fetchData}>
+              {loading ? 'Finding something cool' : 'Find an activity'}
+            </Button>
+            <Activity mt={6} />
+          </Flex>
         </Grid>
       </Box>
     </ChakraProvider>
