@@ -47,7 +47,7 @@ function App() {
         <ColorModeSwitcher />
         <Grid minH="50vh" p={3}>
           <Flex direction="column" align="center" justify="center">
-            <Button onClick={fetchData}>
+            <Button disabled={loading} onClick={fetchData}>
               {loading ? 'Finding something cool' : 'Find an activity'}
             </Button>
             <Activity mt={6} />
