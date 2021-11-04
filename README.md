@@ -1,3 +1,5 @@
+check it out here: https://im-bored-web.herokuapp.com/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
